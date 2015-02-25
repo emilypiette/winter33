@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>winter35</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+    <script src="js/batterycapacity.js"></script>
+    <script src="js/leftsignal.js"></script>
+    <script src="js/front_leftsignal.js"></script>
+
+    <!---
+    <script src="charge107.js"></script>
+    <script language="javascript" type="text/javascript" src="left107.js"></script>
+
+    <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+    -->
+    <style>
+    body {
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+    color: #fff;
+    background-color: #000;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 35px;
+    text-transform: uppercase;
+    font-family: monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+p {
+    margin: 0 0 25px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+@media(min-width:768px) {
+    p {
+        margin: 0 0 35px;
+        font-size: 20px;
+        line-height: 1.6;
+    }
+}
+
+a {
+    color: #42dca3;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none;
+    color: #1d9b6c;
+}
+
+.light {
+    font-weight: 400;
+}
+
+.intro {
+    display: table;
+    width: 100%;
+    height: auto;
+    padding: 100px 0;
+    text-align: center;
+    color: #fff;
+    background: url(../img/intro-bg.jpg) no-repeat bottom center scroll;
+    background-color: #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.intro .intro-body {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.intro .intro-body .brand-heading {
+    font-size: 40px;
+}
+
+.intro .intro-body .intro-text {
+    font-size: 18px;
+}
+
+@media(min-width:768px) {
+    .intro {
+        height: 100%;
+        padding: 0;
+    }
+
+    .intro .intro-body .brand-heading {
+        font-size: 100px;
+    }
+
+    .intro .intro-body .intro-text {
+        font-size: 26px;
+    }
+}
+
+.btn-circle {
+    width: 70px;
+    height: 70px;
+    margin-top: 15px;
+    padding: 7px 16px;
+    border: 2px solid #fff;
+    border-radius: 100%!important;
+    font-size: 40px;
+    color: #fff;
+    background: 0 0;
+    -webkit-transition: background .3s ease-in-out;
+    -moz-transition: background .3s ease-in-out;
+    transition: background .3s ease-in-out;
+}
+
+.btn-circle:hover,
+.btn-circle:focus {
+    outline: 0;
+    color: #fff;
+    background: rgba(255,255,255,.1);
+}
+
+.btn-circle i.animated {
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 1s;
+    -moz-transition-property: -moz-transform;
+    -moz-transition-duration: 1s;
+}
+
+.btn-circle:hover i.animated {
+    -webkit-animation-name: pulse;
+    -moz-animation-name: pulse;
+    -webkit-animation-duration: 1.5s;
+    -moz-animation-duration: 1.5s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+}
+
+@-webkit-keyframes pulse {    
+    0 {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    50% {
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@-moz-keyframes pulse {    
+    0 {
+        -moz-transform: scale(1);
+        transform: scale(1);
+    }
+
+    50% {
+        -moz-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+
+    100% {
+        -moz-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.content-section {
+    padding-top: 100px;
+}
+
+.Monituring-section {
+    width: 100%;
+    padding: 50px 0;
+    color: #fff;
+    background: url(../img/downloads-bg.jpg) no-repeat center center scroll;
+    background-color: #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+#map {
+    width: 100%;
+    height: 200px;
+    margin-top: 100px;
+}
+
+@media(min-width:767px) {
+    .content-section {
+        padding-top: 250px;
+    }
+
+    .Monituring-section {
+        padding: 100px 0;
+    }
+
+    #map {
+        height: 400px;
+        margin-top: 250px;
+    }
+}
+
+.btn {
+    border-radius: 0;
+    text-transform: uppercase;
+    font-family: monospace
+    font-weight: 400;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.btn-default {
+    border: 1px solid #42dca3;
+    color: #42dca3;
+    background-color: transparent;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+    border: 1px solid #42dca3;
+    outline: 0;
+    color: #000;
+    background-color: #42dca3;
+}
+
+ul.banner-social-buttons {
+    margin-top: 0;
+}
+
+@media(max-width:1199px) {
+    ul.banner-social-buttons {
+        margin-top: 15px;
+    }
+
+footer {
+    padding: 100px 0;
+}
+
+footer p {
+    margin: 10;
+}
+
+::-moz-selection {
+    text-shadow: none;
+    background: #fcfcfc;
+    background: rgba(255,255,255,.2);
+}
+
+::selection {
+    text-shadow: none;
+    background: #fcfcfc;
+    background: rgba(255,255,255,.2);
+}
+
+img::selection {
+    background: 0 0;
+}
+
+img::-moz-selection {
+    background: 0 0;
+}
+
+body {
+    webkit-tap-highlight-color: rgba(255,255,255,.2);
+}
+
+.Mode-section {
+        padding: 100px 0;
+    }
+
+    #map {
+        height: 400px;
+        margin-top: 250px;
+        margin-bottom: 250px;
+    }
+
+</style> 
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <script>
+    var tempo = 2000;
+    mysong = [
+        [261, tempo * .125],
+        [261, tempo * .125],
+        [261, tempo * .125],
+        [698, tempo * .25],
+        [880, tempo * .25],
+        [null, 50]
+    ];
+
+    function sensop(mag) {
+        //newmag = 2 * ((1 - mag) - .5);
+        newmag = mag
+            //console.log(mag, newmag);
+        return newmag;
+    }
+    $(document).ready(function() {
+
+
+        //chargeplot = makeChargePlot();
+
+        $("#togglesensors").click(function(e) {
+            //console.log("togglesensors");
+            $("#allsensors").toggleClass('hidden');
+        });
+        //var socket = io.connect('http://10.48.108.xxx:3001'); //change this to match your robot
+        var socket = io.connect('http://10.48.102.xxx:3001'); //change this to match your robot
+        batterycapacity(socket);
+        leftsignal(socket);
+        front_leftsignal(socket);
+        socket.on('sensordata', function(data) {
+
+            //console.log(data);
+            $("#current").text(data.battery.current.amps);
+            $("#voltage").text(data.battery.voltage.volts.toFixed(2));
+            $("#left").text(data.cliff_sensors.left.signal.raw);
+            $("#front_left").text(data.cliff_sensors.front_left.signal.raw);
+            $("#front_right").text(data.cliff_sensors.front_right.signal.raw);
+            $("#right").text(data.cliff_sensors.right.signal.raw);
+
+            $(".left_signal").css("opacity", sensop(data.cliff_sensors.left.signal.magnitude));
+            $(".left_signal").text(sensop(data.cliff_sensors.left.signal.magnitude));
+
+            $(".front_left_signal").css("opacity", sensop(data.cliff_sensors.front_left.signal.magnitude));
+            $(".front_left_signal").text(sensop(data.cliff_sensors.front_left.signal.magnitude));
+
+            $(".front_right_signal").css("opacity", sensop(data.cliff_sensors.front_right.signal.magnitude));
+            $(".front_right_signal").text(sensop(data.cliff_sensors.front_right.signal.magnitude));
+
+            $(".right_signal").css("opacity", sensop(data.cliff_sensors.right.signal.magnitude));
+            $(".right_signal").text(sensop(data.cliff_sensors.right.signal.magnitude));
+
+            if (data.song.playing == false) {
+                //socket.emit('sing', [[data.cliff_sensors.front_left.signal.magnitude * 1000,data.cliff_sensors.front_right.signal.magnitude * 1000]]);
+            }
+
+            $("#allsensors").text(JSON.stringify(data));
+        });
+
+        socket.on('countup', function(data) {
+            //console.log(data);
+            $("#countup").text(data);
+        });
+
+
+        $("#forward").click(function(e) {
+            console.log('forward');
+            socket.emit('drive', {
+                left: 15,
+                right: 15
+            });
+        });
+
+        $("#backward").click(function(e) {
+            console.log('backward');
+            socket.emit('drive', {
+                left: -15,
+                right: -15
+            });
+        });
+
+        $("#stop").click(function(e) {
+            console.log('stop');
+            socket.emit('drive', {
+                left: 0,
+                right: 0
+            });
+        });
+
+
+        $("#turnLeft").click(function(e) {
+            console.log('stop');
+            socket.emit('drive', {
+                left: -15,
+                right: 15
+            });
+        });
+
+
+        $("#turnRight").click(function(e) {
+            console.log('stop');
+            socket.emit('drive', {
+                left: 15,
+                right: -15
+            });
+        });
+
+        $("#playsong").click(function(e) {
+            socket.emit('sing', mysong);
+        });
+
+        $("#passiveMode").click(function(e) {
+            socket.emit('passiveMode');
+        });
+        $("#safeMode").click(function(e) {
+            socket.emit('safeMode');
+        });
+
+        $("#fullMode").click(function(e) {
+            socket.emit('fullMode');
+        });
+
+
+        $('body').keydown(function(event) {
+            console.log(event.which);
+            speed = $("#speed").text();
+            //speed = 100;
+            if (event.which === 87 || event.which === 38) //w, up arrow - move forward
+            {
+                //socket.emit('sing', [[300,300]]);
+                event.preventDefault();
+                speed = $("#speed").text();
+                speed = speed * 1 + 25;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: speed,
+                    right: speed
+                });
+
+            }
+
+            if (event.which === 83 || event.which === 40) //s, down arrow - move backward
+            {
+                event.preventDefault();
+                speed = $("#speed").text();
+                speed = speed * 1 - 25;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: speed,
+                    right: speed
+                });
+            }
+
+
+
+            if (event.which === 37) //left arrow - move right
+            {
+                event.preventDefault();
+                speed = $("#speed").text();
+                speed = 25;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: speed,
+                    right: -speed
+                });
+
+            }
+
+            if (event.which === 65) //a - forward left
+            {
+                event.preventDefault();
+                speed = $("#speed").text();
+                (speed < 25) ? speed=25 : speed = speed;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: Math.round(speed),
+                    right: Math.round(speed -25)
+                });
+
+            }
+
+            if (event.which === 68) //d - forward left
+            {
+                event.preventDefault();
+                speed = $("#speed").text();
+                (speed < 25) ? speed=25 : speed = speed;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: Math.round(speed - 25),
+                    right: Math.round(speed)
+                });
+
+            }
+
+            if (event.which === 39) //right arrow - move left
+            {
+                event.preventDefault();
+                speed = $("#speed").text();
+                speed = 25;
+                $("#speed").text(speed);
+                socket.emit('drive', {
+                    left: -speed,
+                    right: speed
+                });
+            }
+
+            if (event.which === 32) //space - stop
+
+            {
+                event.preventDefault();
+
+
+
+                function slowtostop() {
+                    speed = $("#speed").text();
+                    if (Math.abs(speed) <= 50) {
+                        speed = 0;
+                        $("#speed").text(speed);
+                        socket.emit('drive', {
+                            left: speed,
+                            right: speed
+                        });
+                        return;
+                    }
+                    setTimeout(function() {
+                        speed = $("#speed").text() * 1;
+                        speed += speed > 0 ? Number(-75) : Number(75);
+                        $("#speed").text(speed);
+                        socket.emit('drive', {
+                            left: speed,
+                            right: speed
+                        });
+                        slowtostop();
+                    }, 40);
+                }
+
+                slowtostop();
+
+            }
+        });
+
+    });
+    </script>
+
+</head>
+
+<body>
+<!-- Collect the nav links, forms, and other content for toggling -->
+            
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#Monituring">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#download">Download</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Robot Control</h1>
+                        <a href="#Monituring" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Monituring Section -->
+    <section id="Monituring" class="container content-section text-center">
+        <h1>Monituring</h1>
+        <div class="row">
+            <div class="col-md-3" id="leftsignal" style="height:300px">.....</div>
+            <div class="col-md-3" id="front_leftsignal" style="height:300px">.....</div>
+            <div class="col-md-3" id="frontrightdata" style="height:300px">.....</div>
+            <div class="col-md-3" id="rightdata" style="height:300px">.....</div>
+        </div>
+        <div class="col-md-3" id="batterycapacity" style="height:300px"></div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-offset-6">
+
+                        </div>
+                        <button id="togglesensors">Toggle Sensors</button>
+                        <div class="hidden" id="allsensors">...</div>
+    </section>
+
+    <!-- Modes Section -->
+    <section id="Modes" class="container content-section text-center">
+        <h1>Modes</h1>
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-2">
+            <button class="btn-success btn col-lg-6" id="passiveMode">Passive Mode</button>
+        </div>
+        <div class="row">
+            <div class="col-lg-13 col-lg-offset-2">
+            <button class="btn-warning btn col-lg-6" id="safeMode">Safe Mode</button>
+        </div>
+            <div class="row">
+                <div class="col-lg-14 col-lg-offset-2">
+            <button class="btn-danger btn col-lg-6" id="fullMode">Full Mode</button>
+            <div class="button" id="button"></div> 
+        </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Controls Section -->
+        <h1>Controls</h1>
+        <div class="row">
+            <div class="col-xs-3">
+                <button id="playsong" class="btn-success btn-lg btn-block">Play Music
+                    <span class="glyphicon glyphicon-music"></span>
+                </button>
+            </div>
+        </div>
+        <div class="button" id="button"></div> 
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="forward"><span class="glyphicon glyphicon-arrow-up rotate-left-45"></span>Forward-left
+                </button>
+                <div class="button" id="button"></div> 
+            </div>
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="forward">Forward<span class="glyphicon glyphicon-arrow-up"></span>
+                </button>
+            </div>
+            <div class="col-md-2">
+                </button>
+                <button class="btn-primary btn-lg btn-block" id="forward">Forward-right<span class="glyphicon glyphicon-arrow-up rotate-right-45"></span>
+                </button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="turnLeft"><span class="glyphicon glyphicon-arrow-left"> Left</span>
+                </button>
+            </div>
+            <div class="col-md-2 ">
+
+                <button class="btn-lg btn-block btn-danger" id="stop">Stop
+                    <span class="glyphicon glyphicon-stop"></span>
+                </button>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="turnRight">Right<span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="backleft">Back-Left
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="backward">Back<span class="glyphicon glyphicon-arrow-down"></span>
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn-primary btn-lg btn-block" id="backright">Back-Right
+                </button>
+            </div>
+        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
